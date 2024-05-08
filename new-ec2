@@ -1,0 +1,49 @@
+provider "aws" {
+  region = "your_region"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-xxxxxxxxxxxxxxx"   # Replace with your desired AMI ID
+  instance_type = "t2.micro"               # Choose your desired instance type
+  key_name      = "your_keypair_name"      # Replace with your key pair name
+
+  # Security group
+  security_groups = [aws_security_group.instance.id]
+
+  # Volume configuration
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = 10
+    delete_on_termination = true
+  }
+
+  tags = {
+    Name = "example-instance"
+  }
+}
+
+resource "aws_security_group" "instance" {
+  name        = "example-instance-sg"
+  description = "Security group for the example instance"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
