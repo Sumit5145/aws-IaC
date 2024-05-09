@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "example" {
   ami           = "ami-0f58b397bc5c1f2e8"   # Replace with your desired AMI ID
   instance_type = "t2.micro"               # Choose your desired instance type
-  key_name      = "gafana.pem"      # Replace with your key pair name
+  key_name      = "mykub"      # Replace with your key pair name
 
   # Security group
   security_groups = [aws_security_group.instance.id]
